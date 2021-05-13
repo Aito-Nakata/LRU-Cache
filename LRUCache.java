@@ -1,23 +1,38 @@
 import java.util.HashMap;
-import java.util.Optional;
+import java.lang.String;
+
 public class LRUCache<T> implements lru<T> {
 
-    private HashMap<String, T> map = new HashMap<>(); //文字・キー共に文字列を格納
+    class Node{
+        String key;
+        T value;
+        Node next,prev;
+    
+        //コンストラクタ
+        public Node(String key, T value){
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    private HashMap<String, T> map = new HashMap<>();
+    Node head,tail;
 
     //データの追加
     @Override
     public void put(String key, T value){
-        map.put(key,value);
+        
     }
 
     //データの使用
     @Override
-    public Optional<T> get(String key){
-        System.out.println(map.get(key));
+    public int get(String key){
+        
     }
 
-    //データの参照
-    public Optional<T> view_data(){
-        System.out.println(map.size());
+    //ノードの削除
+    private void removeNode(Node){
+
     }
+
 }
