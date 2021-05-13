@@ -1,20 +1,17 @@
-public class LRUChacheTest{
-    //Test(1つも使われていない場合、追加したものから消えるようにする)
-    public void testLRU_access{
-        LRUCache<String> lru = new LRUCache<>();
-        lru.put("a","dataA");
-        lru.put("b","dataB");
-        lru.put("c","dataC");
-        assertEquals(null,lru.get("a"));
+import java.util.HashMap;
+public class LRUCache<T> implements lru<T> {
+
+    private HashMap<String, String> map = new HashMap<>(); //文字・キー共に文字列を格納
+
+    //データの追加
+    @Override
+    public void put(String key, T value){
+
     }
 
-    //Test(getされたら使われたとみなすようにする)
-    public void testLRU_use{
-        LRUCache<String> lru = new LRUCache<>();
-        lru.put("a","dataA");
-        lru.put("b","dataB");
-        assertEquals("dataA",lru.get("a"));
-        lru.put("c","dataC");
-        assertEquals(null,lru.get("a"));
+    //データの使用
+    @Override
+    public Optional<T> get(String key){
+
     }
 }
