@@ -4,6 +4,8 @@ public class LRUCacheTest_access{
         lru<String> lru = new LRUCache<>();
         lru.put("a","dataA");
         lru.put("b","dataB");
+        lru.put("c","dataC");
         lru.get("a");
+        lru.get("b");
     }
 }

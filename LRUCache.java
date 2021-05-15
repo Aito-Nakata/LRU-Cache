@@ -1,25 +1,46 @@
 import java.util.HashMap;
-import java.util.Optional;
 import java.lang.String;
+
 
 public class LRUCache<T> implements lru<T> {
 
-    private HashMap<String, Node> map = map = new HashMap<String, Node>();
-    Node<T> head,tail;
+    class Node{
+        String key;
+        T value;
+        Node next,prev;
+
+        public Node(String key, T value){
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    private HashMap<String, Node> map = new HashMap<String, Node>();
+    Node head;
+    Node tail;
+    private int maxSize = 2;
 
     //データの追加
     @Override
     public void put(String key, T value){
-        if(map.containsKey(key)){
-            Node<T> N = map.get(key); //移動させるノード
+        if(map.containsKey(key)){ //既にデータが追加されている場合
+            Node N = map.get(key); //移動させるノード
             N.value = value;
             removeNode(N);
             putNodeTop(N);
         }
         
-        Node<T> ref = new Node<>(); //追加するノード
-        ref.key = key;
-        ref.value = value;
+        Node ref = new Node(key,value); //追加するノード
+        ref.next = ref.prev = null;
+
+        if(map.size() >= maxSize){ //最大メモリサイズを超えた時
+            map.remove(tail.key);
+            removeNode(tail);
+            putNodeTop(ref);
+        }else{
+            putNodeTop(ref);
+        }
+
         map.put(key, ref);
     }
 
@@ -27,47 +48,47 @@ public class LRUCache<T> implements lru<T> {
     @Override
     public void get(String key){
         if(map.containsKey(key)){
-            Node<T> getNode = map.get(key); //使用するデータを含むノード
+            Node getNode = map.get(key); //使用するデータを含むノード
             removeNode(getNode);
             putNodeTop(getNode);
 
             System.out.println(getNode.value);
-        }
-        else{
-        System.out.println("No Date.");
+        }else{
+            System.out.println("No Date.");
         }
     }
 
     //ノードの削除
-    private void removeNode(Node<T> node){
-        Node<T> prevNode = node.prev;
-        Node<T> nextNode = node.next;
+    private void removeNode(Node node){
+        Node prevNode = node.prev;
+        Node nextNode = node.next;
 
         if(prevNode != null){
             prevNode.next = node.next;
-        }
-        else{
+        }else{
             head = nextNode;
         }
 
         if(nextNode != null){
             nextNode.prev = node.prev;
-        }
-        else{
+        }else{
             tail = prevNode;
         }
     }
 
     //ノードをTopに追加
-    private void putNodeTop(Node<T> node){
+    private void putNodeTop(Node node){
         node.next = head;
         node.prev = null;
 
         if(head != null){
             head.prev = node;
-        }
-        else{
+        }else{
             head = node;
+        }
+
+        if(tail == null){
+            tail = head;
         }
     }
 }
